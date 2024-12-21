@@ -1,7 +1,7 @@
 import os
 
 
-class ConfigValidator:
+class ArgsValidator:
     required_keys = {
         "sourceFolder": str,
         "destinationFolder": str,
@@ -13,14 +13,14 @@ class ConfigValidator:
         "maxRetries": int,
     }
 
-    def __init__(self, config_obj: dict, raise_exception: bool = False):
-        self.config_obj = config_obj
+    def __init__(self, args_obj: dict, raise_exception: bool = False):
+        self.args_obj = args_obj
         self.raise_exception = raise_exception
 
     def validate(self) -> bool | Exception:
         """
-        Validate configuration object.
-        :return: True if configuration object is valid; otherwise - False.
+        Validate args object.
+        :return: True if args object is valid; otherwise - False.
         """
         ret: bool = False
 
@@ -39,20 +39,21 @@ class ConfigValidator:
 
     def _validate_required(self):
         for key, expected_type in self.required_keys.items():
-            if key not in self.config_obj:
+            if key not in self.args_obj:
                 raise ValueError(f"Missing required key: '{key}'")
-            if not isinstance(self.config_obj[key], expected_type):
+            if not isinstance(self.args_obj[key], expected_type):
                 raise TypeError(f"Invalid type for key '{key}': "
                                 f"Expected {expected_type.__name__}, got {type(self.config_obj[key]).__name__}")
 
     def _validate_optional(self):
         for key, expected_type in self.optional_keys.items():
-            if key in self.config_obj and not isinstance(self.config_obj[key], expected_type):
+            if key in self.args_obj and not isinstance(self.args_obj[key], expected_type):
                 raise TypeError(f"Invalid type for key '{key}': "
-                                f"Expected {expected_type.__name__}, got {type(self.config_obj[key]).__name__}")
+                                f"Expected {expected_type.__name__}, got {type(self.args_obj[key]).__name__}")
 
     def _validate_common(self):
-        if not os.path.exists(self.config_obj["sourceFolder"]):
-            raise ValueError(f"Source directory '{self.config_obj['sourceFolder']}' does not exist.")
-        if not os.path.isdir(self.config_obj["sourceFolder"]):
-            raise ValueError(f"Source path '{self.config_obj['sourceFolder']}' is not a directory.")
+        if not os.path.exists(self.args_obj["sourceFolder"]):
+            raise ValueError(f"Source directory '{self.args_obj['sourceFolder']}' does not exist.")
+        if not os.path.isdir(self.args_obj["sourceFolder"]):
+            raise ValueError(f"Source path '{self.args_obj['sourceFolder']}' is not a directory.")
+

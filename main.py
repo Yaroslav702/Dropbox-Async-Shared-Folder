@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 import json
-from utils import ConfigValidator
+from utils import ArgsValidator
 
 
 def main():
@@ -12,8 +12,9 @@ def main():
     with open(args.config, "r") as file:
         config = json.load(file)
 
-        validator = ConfigValidator(config, raise_exception=True)
+        validator = ArgsValidator(config, raise_exception=True)
         validator.validate()
+
 
 
     # asyncio.run(sync_files(config))
