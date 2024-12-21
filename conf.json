@@ -1,0 +1,7 @@
+{
+  "sourceFolder": "/Users/vysotskyi/Desktop/GDriveShared",
+  "destinationFolder": "",
+  "fileFilter": ["*.txt", "*.jpg", "*.png"],
+  "doBackup": false,
+  "maxRetries": 3
+}
