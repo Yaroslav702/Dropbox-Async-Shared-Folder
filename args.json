@@ -1,7 +1,6 @@
 {
   "sourceFolder": "",
   "destinationFolder": "",
-  "fileFilter": ["*.txt", "*.jpg", "*.png"],
-  "doBackup": false,
+  "fileFilter": [".txt", ".jpg", ".png"],
   "maxRetries": 3
 }
