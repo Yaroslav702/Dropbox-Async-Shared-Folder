@@ -1,0 +1,6 @@
+{
+  "sourceFolder": "",
+  "destinationFolder": "",
+  "fileFilter": [".txt", ".jpg", ".png"],
+  "maxThreads": 3
+}
