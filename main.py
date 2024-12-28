@@ -24,12 +24,7 @@ def main():
 
         base_config.populate_from_args(args_config)
 
-    watcher = FolderWatcher(base_config.source_folder,
-                            destination_folder_path=base_config.destination_folder,
-                            dropbox_token=base_config.DROPBOX_TOKEN,
-                            threads_num=base_config.MAX_THREADS,
-                            logger=logger,
-                            allowed_extensions=base_config.file_filter)
+    watcher = FolderWatcher(config=base_config, logger=logger)
     watcher.run()
 
 

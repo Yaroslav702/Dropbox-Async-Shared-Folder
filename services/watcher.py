@@ -5,6 +5,8 @@ from typing import Optional
 from threading import Thread
 from logging import Logger
 
+from config import BaseConfig
+
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from watchdog.observers import Observer
 
@@ -25,7 +27,9 @@ class FileProcessor:
         self.dbx_client = Dropbox(dropbox_token)
 
     async def _async_upload(self, file_path: str, dropbox_path: str):
-        """ Asynchronous file upload to Dropbox """
+        """
+        Asynchronous file upload to Dropbox
+        """
         async with ClientSession() as session:
             with open(file_path, "rb") as f:
                 file_data = f.read()
@@ -37,7 +41,7 @@ class FileProcessor:
 
     def run(self):
         while True:
-            event: Optional[FileSystemEvent] = self.event_queue.get()
+            event: FileSystemEvent = self.event_queue.get()
 
             if event is None:
                 self.logger.info(f"Thread {self.thread_id} exiting.")
@@ -85,22 +89,16 @@ class FolderWatcher:
     """
     Watches a folder for changes and delegates tasks to threads.
     """
-    def __init__(self,
-                 local_folder_path: str,
-                 destination_folder_path: str,
-                 threads_num: int,
-                 logger: Logger,
-                 dropbox_token: str,
-                 allowed_extensions: Optional[list[str]] = None):
-        if not os.path.exists(local_folder_path):
-            raise ValueError(f"Folder path does not exist: {local_folder_path}")
+    def __init__(self, config: BaseConfig, logger: Logger):
+        if not os.path.exists(config.source_folder):
+            raise ValueError(f"Folder path does not exist: {config.source_folder}")
 
-        self.local_folder_path = local_folder_path
-        self.destination_folder_path = destination_folder_path
-        self.threads_num = threads_num
+        self.local_folder_path = config.source_folder
+        self.destination_folder_path = config.destination_folder
+        self.threads_num = config.max_threads
         self.logger = logger
-        self.dropbox_token = dropbox_token
-        self.allowed_extensions = allowed_extensions
+        self.dropbox_token = config.DROPBOX_TOKEN
+        self.allowed_extensions = config.file_filter
 
         self.event_queue: Queue = Queue()
         self.threads: list[Thread] = []

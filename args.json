@@ -2,5 +2,5 @@
   "sourceFolder": "",
   "destinationFolder": "",
   "fileFilter": [".txt", ".jpg", ".png"],
-  "maxRetries": 3
+  "maxThreads": 3
 }

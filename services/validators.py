@@ -5,12 +5,11 @@ class ArgsValidator:
     required_keys = {
         "sourceFolder": str,
         "destinationFolder": str,
+        "maxThreads": int,
     }
 
     optional_keys = {
-        "fileFilter": list,
-        "doBackup": bool,
-        "maxRetries": int,
+        "fileFilter": list
     }
 
     def __init__(self, args_obj: dict, raise_exception: bool = False):
@@ -43,7 +42,7 @@ class ArgsValidator:
                 raise ValueError(f"Missing required key: '{key}'")
             if not isinstance(self.args_obj[key], expected_type):
                 raise TypeError(f"Invalid type for key '{key}': "
-                                f"Expected {expected_type.__name__}, got {type(self.config_obj[key]).__name__}")
+                                f"Expected {expected_type.__name__}, got {type(self.args_obj[key]).__name__}")
 
     def _validate_optional(self):
         for key, expected_type in self.optional_keys.items():
